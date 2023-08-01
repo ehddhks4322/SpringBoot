@@ -1,0 +1,5 @@
+package com.korea.tier.mapper;
+
+public interface OrderMapper {
+
+}

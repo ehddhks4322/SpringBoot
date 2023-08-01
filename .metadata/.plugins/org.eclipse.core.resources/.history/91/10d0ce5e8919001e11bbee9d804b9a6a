@@ -1,0 +1,26 @@
+package com.korea.board.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.korea.board.dao.BoardDAO;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/board/*")
+public class BoardController {
+	
+	private final BoardDAO boardDAO;
+	private final HttpServletRequest request;
+	
+	@GetMapping("board_list")
+	public String list(Model model,) {
+		
+	}
+}

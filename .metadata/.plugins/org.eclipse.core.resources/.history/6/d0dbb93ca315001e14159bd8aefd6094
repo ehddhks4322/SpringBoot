@@ -1,0 +1,6 @@
+package com.korea.tier.mapper;
+
+public interface OrderMapper {
+
+	//주문하기
+}

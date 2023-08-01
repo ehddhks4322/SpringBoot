@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<table border="1" width="700">
+			<tr>
+				<td colspan="5"><img src="/img/title_04.gif"></td>
+			</tr>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+				<th>조회수</th>
+			</tr>
+			<!--반복문을 통해 controller에서 넘어온 데이터 출력-->
+			<th:block th:each="vo : ${list}">
+				<tr th:object="${vo}">
+					<td align="center" th:text="*{idx}"></td>
+					
+					<td>
+						<!--만약 depth가 0보다 크다면 depth만큼 반복하여 띄어쓰기를 해라-->
+						<th:block th:if="${vo.depth > 0}"> <!--.sequence(start,end) : start부터 end까지 1씩 증가 
+															   .sequence(start,end,step) : start부터 end까지 step씩 증가-->
+							<span th:each="depth : ${numbers.sequence(1,vo.depth)}">&nbsp;</span>
+						</th:block>
+						
+						<!--depth가 0이 아니면 댓글이기 때문에 ㄴ을 붙혀라-->
+						<th:block th:if="${vo.depth ne 0}">ㄴ</th:block>
+						
+						<!--del_info가 -1이 아니라면 삭제가 안된 글이기 때문에 누를 수 있게 만들자.-->
+						<th:block th:if="${vo.del_info ne -1}">
+							<a th:href="@{/board/view(idx=*{idx},page=${param.page})}">
+								<font color="black" th:text="*{subject}"></font>
+							</a>
+						</th:block>
+						
+						<!--del_info가 -1이라면 삭제된 글이기 때문에 누를 수 없게 만들자-->
+						<th:block th:if="${vo.del_info eq -1}">							
+								<font color="gray" th:text="이미 삭제된 글입니다."></font>							
+						</th:block>
+					</td>
+					
+					<!--del_info가 -1이면 unknown으로 나오게 하고, 아니면 작성자명이 나오게 하기-->
+				</tr>
+			</th:block>
+		</table>
+	</body>
+</html>

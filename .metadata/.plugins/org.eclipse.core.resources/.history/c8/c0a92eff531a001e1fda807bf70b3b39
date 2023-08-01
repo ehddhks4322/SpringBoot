@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<table border="1">
+			<caption>:::게시글 상세보기:::</caption>
+			<tr>
+				<th>제목</th>
+				<td th:text="${vo.subject}"></td>
+			</tr>
+		</table>
+	</body>
+</html>

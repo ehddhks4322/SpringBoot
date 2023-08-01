@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<form name="f" th:action="@{/board/insert}" th:object="${vo}" method="get">
+			<input type="hidden" name="page" th:value="${param.page}">
+			<table border="1">
+				<caption>:::새글쓰기:::</caption>
+			</table>
+		</form>
+	</body>
+</html>

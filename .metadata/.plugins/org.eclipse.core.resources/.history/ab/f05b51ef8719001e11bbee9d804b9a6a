@@ -1,0 +1,7 @@
+package com.korea.board.vo;
+
+public class BoardVO {
+	private int idx; //글 번호
+	private int readhit; //조회수
+	private int ref; //참조글 번호
+}

@@ -1,0 +1,9 @@
+package com.korea.tier.mapper;
+
+import com.korea.tier.vo.OrderVO;
+
+public interface OrderMapper {
+
+	//주문하기
+	public void insert(OrderVO orderVO);
+}

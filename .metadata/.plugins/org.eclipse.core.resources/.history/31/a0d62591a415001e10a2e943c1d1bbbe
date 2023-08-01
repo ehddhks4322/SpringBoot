@@ -1,0 +1,18 @@
+package com.korea.tier.service;
+
+import org.springframework.stereotype.Service;
+
+import com.korea.tier.dao.OrderDAO;
+import com.korea.tier.dao.ProductDAO;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+
+	private final OrderDAO orderDAO;
+	private final ProductDAO productDAO;
+	
+	//주문하기 & 재고 수정
+}

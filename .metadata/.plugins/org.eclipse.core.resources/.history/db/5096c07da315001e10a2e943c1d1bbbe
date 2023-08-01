@@ -1,0 +1,14 @@
+package com.korea.tier.dao;
+
+import org.springframework.stereotype.Repository;
+
+import com.korea.tier.mapper.OrderMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class OrderDAO {
+
+	private final OrderMapper orderMapper;
+}

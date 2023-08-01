@@ -1,0 +1,5 @@
+package com.korea.tier.vo;
+
+public class OrderVO {
+
+}

@@ -1,0 +1,14 @@
+package com.korea.board.dao;
+
+import org.springframework.stereotype.Repository;
+
+import com.korea.board.mapper.BoardMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class BoardDAO {
+
+	private final BoardMapper boardMapper;
+}

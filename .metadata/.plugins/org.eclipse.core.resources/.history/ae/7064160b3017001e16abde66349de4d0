@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<style>
+			div{
+				margin : 0 auto;
+				width: 1000px;
+			}
+			
+			table{
+				width: 100%;
+			}
+			
+			button{
+				width: 50%;
+			}
+			
+			button.register-ready{
+				width: 100%;
+			}
+			
+			div.register-wrap{
+				display: none;
+				 width: 500px;
+			}
+			
+			 div.register-wrap div {
+         		 width: 100%
+		      }
+		
+		     div.register-wrap div input {
+		         width: 100%
+		      }
+		
+		     input.register-done {
+		         width: 100%
+		      }
+
+		</style>
+	</head>
+	<body>
+		<div>
+			<button type="button" class="register-ready">상품 추가</button>
+			<div class="register-wrap" th:object="${productForm}">
+				<div>
+					<input type="text" th:field="*{productName}" placeholder="상품 이름">
+				</div>
+				<div>
+					<input type="text" th:field="*{productStock}" placeholder="상품 재고">
+				</div>
+				<div>
+					<input type="text" th:field="*{productPrice}" placeholder="상품 가격">
+				</div>
+				<input type="button" class="register-done" value="등록">
+			</div>
+			<table border="1">
+				<tr>
+					<th>단일 상품</th>
+					<th>주문 개수</th>
+					<th>상품 번호</th>
+					<th>상품 이름</th>
+					<th>상품 재고</th>
+					<th>상품 가격</th>
+					<th>등록 날짜</th>
+					<th>수정 날짜</th>
+				</tr>
+				<!--th:block -> 블록태그로 처리-->
+				<th:block th:each="product : ${list}">
+					<tr th:object="${product}">
+						<td><input type="radio" name="productId" th:value="*{productId}"></td>
+						<td><input type="text" class="productCount" readonly></td>
+						<td th:text="*{productId}"></td>
+						<td th:text="*{productName}"></td>
+						<td th:text="*{productStock}"></td>
+						<td th:text="*{productPrice}"></td>
+						<td th:text="*{registerDate}"></td>
+						<td th:text="*{updateDate}"></td>
+					</tr>
+				</th:block>
+			</table>
+			<button type="button" id="order-done">주문완료</button><button type="button" onclick="location.href='/order/list'">주문 내역</button>
+		</div>
+		<form th:action="@{/order/done}" method="get" name="order-form">
+			<input type="hidden" name="productId">
+			<input type="hidden" name="productCount">
+		</form>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+	<script>
+		const $radios = $("input[type='radio']"); //input태그 중 type속성이 radio인 모든 태그 선택
+		const $inputs = $("input[class='productCount']"); //input태그 중 class 속성이 productCount인 모든 태그 선택
+		const $done = $("#order-done"); //id속성이 order-done인 요소 선택
+		const $form = $("form[name='order-form']"); //name 속성이 order-form인 form태그 선택
+		let $temp, i; //$temp는 임시로 사용할 변수, i는 선택된 라디오버튼의 index값을 저장
+		
+		const $registerReady = $("button.register-ready");
+		const $registerDone = $("input.register-done");
+		
+		$registerReady.on("click", function(){
+			
+			$(this).hide();
+			$("div.register-wrap").show();
+			
+			
+		});
+		
+		$registerDone.on("click", function(){
+						
+			/*$("div.register-wrap").hide();
+			$registerReady.show();
+			등록버튼을 누르면 새로고침이 될것이기 때문에 필요없다.*/
+			
+			$.ajax({
+				url : "new",//url 요청
+				type : "post",//전송방식
+				data : JSON.stringify({productName:$("#productName").val(), productStock:$("#productStock").val(), productPrice:$("#productPrice").val()}),
+				
+			})
+			
+		});
+		
+		$radios.on("click", function(){//라디오버튼의 클릭 이벤트를 처리할 함수
+			i = $radios.index(this); //변수 i에 선택한 라디오버튼의 index값을 저장
+			if($temp){//undifiend는 false로 인식을 한다.
+				$temp.prop("readOnly",true); //변수를 사용하여 이전에 선택된 입력 필드를 확인하고, readOnly 속성을 true로 설정하여 읽기 전용으로 변경
+				$temp.val("");
+			}
+			
+			$inputs.eq(i).prop("readOnly",false);//클릭된 라디오 버튼에 해당하는 입력 필드를 선택하고, readOnly 속성을 false로 설정하여 편집이 가능한 상태로 만듦
+			$temp = $inputs.eq(i); //$temp 변수에 선택된 입력필드를 저장합니다.
+		});
+		
+		$done.on("click", function(){//order-done의 버튼의 클릭 이벤트를 처리하는 함수
+			if(i == 0){
+				i = '0';
+			}
+			if(i){
+				console.log(i);
+				$form.find("input[name='productId']").val($radios.eq(i).val());
+				//폼 내에서 name이 'productId'인 input태그를 선택하고, 선택된 라디오 버튼의 값을 준다.
+				$form.find("input[name='productCount']").val($inputs.eq(i).val());
+				//폼 내에서 name이 'productCount'인 input태그를 선택하고, 선택된 입력 필드의 값을 준다.
+				console.log($form.find("input[name='productId']").val());
+				console.log($form.find("input[name='productCount']").val());
+				$form.submit();//폼을 제출한다.
+			}
+		});
+	</script>
+</html>

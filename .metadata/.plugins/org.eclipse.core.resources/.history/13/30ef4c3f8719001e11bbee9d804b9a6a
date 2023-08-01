@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.korea.rest.mapper.OrderMapper">
+	<insert id="insert">
+		INSERT INTO "ORDER" (ORDER_ID, PRODUCT_ID, PRODUCT_COUNT)
+		VALUES (SEQ_ORDER.NEXTVAL,#{productId},#{productCount})
+	</insert>
+	
+	<select id="selectAll" resultType="orderDTO">
+		select P.PRODUCT_ID, PRODUCT_NAME, PRODUCT_STOCK, PRODUCT_PRICE, REGISTER_DATE, UPDATE_DATE, ORDER_ID, PRODUCT_COUNT, ORDER_DATE, PRODUCT_PRICE * PRODUCT_COUNT ORDER_PRICE
+		FROM PRODUCT P JOIN "ORDER" O ON P.PRODUCT_ID = O.PRODUCT_ID
+		<choose>
+			<when test="sort == 'recent'.toString()">
+				ORDER BY ORDER_DATE DESC
+			</when>
+			<otherwise>
+				ORDER BY ORDER_PRICE DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
